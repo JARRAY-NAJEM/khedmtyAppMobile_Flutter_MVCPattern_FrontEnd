@@ -1,14 +1,11 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-
 import 'package:khedmty_app/Views/Constants.dart';
 import 'package:khedmty_app/Views/Screens/Job/JobsScreen.dart';
 import 'package:khedmty_app/Views/Screens/Login/LoginScreen.dart';
 import 'package:khedmty_app/Views/Screens/Splash/SplashScreen.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(const MyApp());

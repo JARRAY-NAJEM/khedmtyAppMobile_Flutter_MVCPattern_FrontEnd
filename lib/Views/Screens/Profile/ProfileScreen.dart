@@ -182,6 +182,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+  bool _passwordObscureText = true;
+
   @override
   void initState() {
     super.initState();
@@ -315,11 +317,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     TextFormField(
                       enabled: _isEditMode,
                       controller: _passwordController,
-                      decoration: const InputDecoration(
+                      obscureText: _passwordObscureText,
+                      decoration: InputDecoration(
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _passwordObscureText = !_passwordObscureText;
+                            });
+                          },
+                          child: Icon(
+                            color: const Color(0xFF6F35A5),
+                            _passwordObscureText
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                        ),
                         hintText: 'كلمة المرور',
                         prefixIcon: Icon(Icons.lock),
                       ),
-                      obscureText: true,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'من فضلك أدخل كلمة المرور';
@@ -331,11 +346,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     TextFormField(
                       enabled: _isEditMode,
                       controller: _confPasswordController,
-                      decoration: const InputDecoration(
+                      obscureText: _passwordObscureText,
+                      decoration: InputDecoration(
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _passwordObscureText = !_passwordObscureText;
+                            });
+                          },
+                          child: Icon(
+                            color: const Color(0xFF6F35A5),
+                            _passwordObscureText
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                        ),
                         hintText: 'تأكيد كلمة المرور',
                         prefixIcon: Icon(Icons.lock),
                       ),
-                      obscureText: true,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'من فضلك قم بتأكيد كلمة المرور';

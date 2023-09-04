@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:khedmty_app/Controllers/JobController.dart';
+import 'package:khedmty_app/Models/JobModel.dart';
 import 'package:khedmty_app/Views/Components/Background.dart';
 import 'package:khedmty_app/Views/Constants.dart';
 import 'package:khedmty_app/Views/Components/Responsive.dart';
@@ -37,8 +38,33 @@ class _JobsScreenState extends State<JobsScreen> {
   void initState() {
     super.initState();
 
-    _jobController.fetchJobs(); // Fetch jobs when the widget initializes
+    // _jobController.fetchJobs();
+    // Fetch jobs when the widget initializes
+    _fetchAllJobs();
+
     clearSharedPreferencesWork();
+  }
+
+  String filterText = '';
+
+  final TextEditingController _filterController = TextEditingController();
+  Future<void> _fetchAllJobs() async {
+    try {
+      await _jobController.fetchJobs();
+
+      // Access the list of jobs from your controller
+      List<Job> jobs = _jobController.jobs;
+
+      // Display all jobs in the terminal
+      for (Job job in jobs) {
+        print("Job ID: ${job.id}");
+        print("Job Name: ${job.job}");
+        print("Job Image URL: ${job.image}");
+        print("---------------");
+      }
+    } catch (e) {
+      print('Error occurred while fetching and displaying jobs: $e');
+    }
   }
 
   String _work = '';
@@ -94,6 +120,11 @@ class _JobsScreenState extends State<JobsScreen> {
                             padding: const EdgeInsets.symmetric(
                                 vertical: defaultPadding),
                             child: TextFormField(
+                              onChanged: (value) {
+                                setState(() {
+                                  filterText = value;
+                                });
+                              },
                               keyboardType: TextInputType.name,
                               textInputAction: TextInputAction.search,
                               cursorColor: kPrimaryColor,
@@ -149,7 +180,8 @@ class _JobsScreenState extends State<JobsScreen> {
                           return Center(
                               child: Text('Error: ${snapshot.error}'));
                         } else {
-                          final jobs = _jobController.jobs;
+                          final jobs =
+                              _jobController.filteredJobsByKeyword(filterText);
                           return ResponsiveGridList(
                             horizontalGridMargin: 0,
                             verticalGridMargin: 0,
